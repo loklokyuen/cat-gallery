@@ -3,7 +3,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { useState } from "react";
 import { NavLink } from "react-router";
 
-function NavBar(){
+function NavBar({ user, avatarURL }){
     const pages = ['Home', 'Gallery'];
     const settings = ['Profile', 'Activity', 'Logout'];
     const [anchorElNav, setAnchorElNav] = useState(null);
@@ -95,10 +95,12 @@ function NavBar(){
                     </Button>
                     ))}
                 </Box>
+                { user?  
                 <Box sx={{ flexGrow: 1 }}>
                     <Tooltip title="Open settings">
                     <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                        <Avatar alt="user avatar" src="/static/images/avatar/1.jpg" />
+                        { avatarURL ? <img src={avatarURL} alt="avatar"/> : 
+                        <Avatar alt="user avatar" src="/static/images/avatar/1.jpg" />}
                     </IconButton>
                     </Tooltip>
                     <Menu
@@ -126,6 +128,7 @@ function NavBar(){
                     ))}
                     </Menu>
                 </Box>
+                : "Log in"}
             </Toolbar>
         </Container>
     </AppBar>
