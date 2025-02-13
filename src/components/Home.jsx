@@ -1,5 +1,9 @@
-function Home(){
-    return <>This is home</>
-}
+import { FormControl } from "@mui/material";
 
-export default Home;
+export default function Home(){
+    return <>
+        <FormControl>
+            Home
+        </FormControl>
+    </>
+}

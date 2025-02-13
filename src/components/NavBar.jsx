@@ -1,10 +1,11 @@
 import { AppBar, Avatar, Box, Button, Container, IconButton, Menu, MenuItem, Toolbar, Tooltip, Typography } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import { useState } from "react";
+import { NavLink } from "react-router";
 
 function NavBar(){
     const pages = ['Home', 'Gallery'];
-    const settings = ['Account', 'Activity', 'Logout'];
+    const settings = ['Profile', 'Activity', 'Logout'];
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
   
@@ -26,7 +27,7 @@ function NavBar(){
     return <AppBar position="static">
         <Container maxWidth="xl">
             <Toolbar disableGutters>
-                {/* for xs/mobile view */}
+                {/* for xs/mobile view, show a menu icon instead of expanding the list of pages */}
                 <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
                     <IconButton
                     size="large"
@@ -55,9 +56,11 @@ function NavBar(){
                         sx={{ display: { xs: 'block', md: 'none' } }}
                         >
                         {pages.map((page) => (
-                            <MenuItem key={page} onClick={handleCloseNavMenu}>
-                            <Typography sx={{ textAlign: 'center' }}>{page}</Typography>
-                            </MenuItem>
+                            <NavLink key={page} to={'/'+page}>
+                                <MenuItem  onClick={handleCloseNavMenu}>
+                                <Typography sx={{ textAlign: 'center' }}>{page}</Typography>
+                                </MenuItem>
+                            </NavLink>
                         ))}
                     </Menu>
                 </Box>
@@ -115,9 +118,11 @@ function NavBar(){
                     onClose={handleCloseUserMenu}
                     >
                     {settings.map((setting) => (
-                        <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                        <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
-                        </MenuItem>
+                        <NavLink key={setting} to={'/'+setting}>
+                            <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                            <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
+                            </MenuItem>
+                        </NavLink>
                     ))}
                     </Menu>
                 </Box>
