@@ -34,14 +34,13 @@ function App() {
   })
   useEffect(()=>{
     const storedUser= localStorage.getItem('user')
-    console.log(storedUser);
     if (storedUser){
         setUser(storedUser)
     }
     const storedAvatar= localStorage.getItem('avatar')
     if (storedAvatar){
       setAvatarURL(storedAvatar)
-  }
+    }
   }, [])
 
   return (
@@ -51,6 +50,7 @@ function App() {
       <NavBar user={user} avatarURL={avatarURL}/>
       <Routes>
         <Route path='/' element={<Home user={user} setUser={setUser} setAvatarURL={setAvatarURL}/>}/>
+        <Route path='/home' element={<Home user={user} setUser={setUser} setAvatarURL={setAvatarURL}/>}/>
         <Route path='/gallery' element={<Gallery />}/>
         <Route path='/profile' element={<Profile />}/>
         <Route path='/activity' element={<Activity />}/>

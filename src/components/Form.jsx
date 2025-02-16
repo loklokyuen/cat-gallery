@@ -24,7 +24,7 @@ export default function Form({ setUser, setAvatarURL }){
         setCurrentTab(newValue);
     }
     return (
-        <Card className="bg-pink-50 rounded-md p-5">
+        <Card>
             <Tabs defaultValue={1} value={currentTab} onChange={handleTabChange} aria-label="tabs of signing in or as a guest" textColor="primary">
                 <Tab label="Sign Up with a Username" value="1" />
                 <Tab label="Continue as Guest" value="2" />
@@ -43,16 +43,18 @@ export default function Form({ setUser, setAvatarURL }){
                     value={username}
                     onChange={(e)=>{ setUsername(e.target.value)}}
                 ></TextField>
-                 <Autocomplete
-                    margin="dense"
-                    value={catLikingLevel}
-                    options={catLikingOptions}
-                    sx={{ width: 250 }}
-                    onChange={(e, newValue)=>{ 
-                        setCatLikingLevel(newValue); 
-                    }}
-                    renderInput={(params) => <TextField {...params} label="How much do you like cats?"/>}
-                    />
+                <TextField 
+                    select
+                    label="How much do you like cats?" 
+                    value={catLikingLevel} 
+                    onChange={(e) => setCatLikingLevel(e.target.value)}
+                    fullWidth
+                    sx={{ width: 250, minHeight: 50 }} // Adjusted size
+                >
+                    <MenuItem sx={{ fontSize: "1.2rem", padding: "12px 20px" }} value={"Very much!"}>Very much!</MenuItem>
+                    <MenuItem sx={{ fontSize: "1.2rem", padding: "12px 20px" }} value={"Okay"}>Okay</MenuItem>
+                    <MenuItem sx={{ fontSize: "1.2rem", padding: "12px 20px" }} value={"Meh.."}>Meh..</MenuItem>
+                </TextField>
                 <TextField
                     fullWidth
                     margin="dense"

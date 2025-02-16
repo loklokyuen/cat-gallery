@@ -95,8 +95,8 @@ function NavBar({ user, avatarURL }){
                     </Button>
                     ))}
                 </Box>
-                { user?  
                 <Box sx={{ flexGrow: 1 }}>
+
                     <Tooltip title="Open settings">
                     <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                         { avatarURL ? <img src={avatarURL} alt="avatar"/> : 
@@ -127,8 +127,8 @@ function NavBar({ user, avatarURL }){
                         </NavLink>
                     ))}
                     </Menu>
+
                 </Box>
-                : "Log in"}
             </Toolbar>
         </Container>
     </AppBar>
