@@ -12,7 +12,7 @@ export default function Home({ user, setUser, setAvatarURL }){
                 variant="outlined"
                 color="primary"
                 sx={{margin: '10px', backgroundColor: '#fff', ':hover': {backgroundColor: '#7886C7', color:'#2D336B'}}}
-                onClick={(e)=>{ 
+                onClick={()=>{ 
                     localStorage.clear();
                     setUser('');
                     setAvatarURL('')
