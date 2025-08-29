@@ -9,7 +9,7 @@ import {
 	TextField,
 	Typography,
 } from "@mui/material";
-import { getBreedList } from "../api";
+import { getBreedList } from "../libs/catApi";
 import { useEffect, useState } from "react";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import CloseIcon from "@mui/icons-material/Close";
@@ -35,7 +35,7 @@ export default function SortFilterBar({
 				setBreedList(formattedBreedList);
 			})
 			.catch((error) => {
-				console.error('Error fetching breed list:', error);
+				console.error("Error fetching breed list:", error);
 			});
 	}, []);
 	if (hidden)

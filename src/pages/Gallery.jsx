@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import CatList from "./CatList";
-import CurrentCat from "./CurrentCat";
-import { getCatImages } from "../api";
+import CatList from "../components/CatList";
+import CurrentCat from "../components/CurrentCat";
+import { getCatImages } from "../libs/catApi";
 import { Box, Grid2, Skeleton } from "@mui/material";
-import SortFilterBar from "./SortFilterBar";
+import SortFilterBar from "../components/SortFilterBar";
 
 export default function Gallery() {
 	const [catImages, setCatImages] = useState([]);
@@ -27,11 +27,11 @@ export default function Gallery() {
 						setCurrCatImage(null);
 					}
 				} else if (response.status === 429) {
-					console.warn('Rate limit exceeded');
+					console.warn("Rate limit exceeded");
 				}
 			})
 			.catch((error) => {
-				console.error('Error fetching cat images:', error);
+				console.error("Error fetching cat images:", error);
 				setCatImages([]);
 				setCurrCatImage(null);
 			})
