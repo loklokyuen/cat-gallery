@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import { Route, Routes } from "react-router";
 import NavBar from "./components/NavBar";
-import Home from "./components/Home";
+import Home from "./pages/Home";
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
-import Gallery from "./components/Gallery";
-import Profile from "./components/Profile";
+import Gallery from "./pages/Gallery";
+import Profile from "./pages/Profile";
 import Activity from "./components/Activity";
 
 function App() {
