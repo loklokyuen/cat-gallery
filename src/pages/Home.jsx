@@ -1,5 +1,6 @@
 import { Button } from "@mui/material";
 import Form from "../components/Form";
+import { NavLink } from "react-router";
 
 export default function Home({ user, setUser, setAvatarURL }) {
 	return (
@@ -10,6 +11,14 @@ export default function Home({ user, setUser, setAvatarURL }) {
 				{user ? (
 					<>
 						<p>Great to see you again {user}!</p>
+						<NavLink to="/gallery">
+							<Button
+								variant="contained"
+								color="primary"
+								sx={{ ":hover": { backgroundColor: "#A9B5DF" } }}>
+								Go to Gallery
+							</Button>
+						</NavLink>
 						<Button
 							variant="outlined"
 							color="primary"

@@ -67,22 +67,23 @@ function NavBar({ user, avatarURL }) {
 							onClose={handleCloseNavMenu}
 							sx={{ display: { xs: "block", md: "none" } }}>
 							{pages.map((page) => (
-								<NavLink key={page} to={"/" + page}>
-									<MenuItem onClick={handleCloseNavMenu}>
-										<Typography sx={{ textAlign: "center" }}>{page}</Typography>
-									</MenuItem>
-								</NavLink>
+								<MenuItem
+									key={page}
+									component={NavLink}
+									to={"/" + page}
+									onClick={handleCloseNavMenu}>
+									<Typography sx={{ textAlign: "center" }}>{page}</Typography>
+								</MenuItem>
 							))}
 						</Menu>
 					</Box>
 					<Box sx={{ display: { xs: "flex", md: "flex" }, mr: 1 }}>
 						<i className="fa-solid fa-cat"></i>
 					</Box>
-					<NavLink to={"/"}>
+					<MenuItem component={NavLink} to={"/"}>
 						<Typography
 							variant="h6"
 							noWrap
-							component="a"
 							sx={{
 								marginInline: 1,
 								display: { xs: "flex", md: "flex" },
@@ -94,28 +95,27 @@ function NavBar({ user, avatarURL }) {
 							}}>
 							Cat Gallery
 						</Typography>
-					</NavLink>
+					</MenuItem>
 
 					{/* for md and up, show the list of pages */}
 					<Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
 						{pages.map((page) => (
-							<NavLink key={page} to={"/" + page}>
-								<Button
-									key={page}
-									onClick={handleCloseNavMenu}
-									sx={{ my: 2, color: "white", display: "block" }}>
+							<MenuItem
+								key={page}
+								component={NavLink}
+								to={"/" + page}
+								onClick={handleCloseNavMenu}>
+								<Button sx={{ my: 2, color: "white", display: "block" }}>
 									{page}
 								</Button>
-							</NavLink>
+							</MenuItem>
 						))}
 					</Box>
-					<Box sx={{ flexGrow: 1, justifyItems: "flex-end" }}>
+					<Box sx={{ flexGrow: 1, display: "flex", justifyContent: "flex-end" }}>
 						<Tooltip title="Open settings">
-							<IconButton
-								onClick={handleOpenUserMenu}
-								sx={{ right: 0, justifySelf: "flex-end" }}>
+							<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
 								{avatarURL ? (
-									<img src={avatarURL} alt="avatar" />
+									<Avatar alt="user avatar" src={avatarURL} />
 								) : (
 									<Avatar alt="user avatar" src="/static/images/avatar/1.jpg" />
 								)}
@@ -137,13 +137,15 @@ function NavBar({ user, avatarURL }) {
 							open={Boolean(anchorElUser)}
 							onClose={handleCloseUserMenu}>
 							{settings.map((setting) => (
-								<NavLink key={setting} to={"/" + setting.toLowerCase()}>
-									<MenuItem key={setting} onClick={handleCloseUserMenu}>
-										<Typography sx={{ textAlign: "center" }}>
-											{setting}
-										</Typography>
-									</MenuItem>
-								</NavLink>
+								<MenuItem
+									key={setting}
+									component={NavLink}
+									to={"/" + setting}
+									onClick={handleCloseUserMenu}>
+									<Typography sx={{ textAlign: "center" }}>
+										{setting}
+									</Typography>
+								</MenuItem>
 							))}
 							{user && (
 								<MenuItem
