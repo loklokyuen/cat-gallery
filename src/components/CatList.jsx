@@ -18,8 +18,15 @@ export default function CatList({
 	}
 
 	return (
-		<Box sx={{ height: 450, overflowY: "scroll", marginBlock: 1 }}>
-			<ImageList cols={3} variant="masonry" gap={8}>
+		<Box
+			sx={{
+				height: 450,
+				overflowY: "auto",
+				overflowX: "visible",
+				marginBlock: 1,
+				paddingInline: 0.5,
+			}}>
+			<ImageList cols={3} variant="masonry" gap={8} sx={{ overflow: "visible" }}>
 				{catImages.map((catImage) => (
 					<Cat
 						key={catImage.id}

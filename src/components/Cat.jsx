@@ -6,9 +6,21 @@ export default function Cat({ catImage, currCatImage, setCurrCatImage }) {
 			key={catImage.id}
 			sx={{
 				cursor: "pointer",
-				borderRadius: "10px",
-				overflow: "hidden",
-				":hover": { transform: "scale(1.1)", transition: "0.3s" },
+				position: "relative",
+				overflow: "visible",
+				"& img": {
+					display: "block",
+					width: "100%",
+					borderRadius: "10px",
+					transition: "transform 0.3s ease, box-shadow 0.3s ease",
+					transformOrigin: "center",
+				},
+				"&:hover": { zIndex: 2 },
+				"&:hover img": {
+					transform: "scale(1.08)",
+					boxShadow:
+						"0 8px 30px rgba(0, 0, 0, 0.28), 0 6px 12px rgba(0, 0, 0, 0.15)",
+				},
 			}}>
 			<img
 				className={`cat-image  ${
