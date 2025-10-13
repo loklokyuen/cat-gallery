@@ -19,8 +19,8 @@ export const getCatImages = (catsPerPage, page, order, breed) => {
         params: {
             limit: catsPerPage,
             page,
-            order,
-            breed_ids: breed
+            order: order || "ASC",
+            breed_ids: breed || undefined
         }
     })
         .then(({ status, data }) => {

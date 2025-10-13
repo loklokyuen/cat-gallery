@@ -1,6 +1,7 @@
 import { Box, Button, ImageList } from "@mui/material";
 import Cat from "./Cat";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 
 export default function CatList({
 	catImages,
@@ -8,6 +9,8 @@ export default function CatList({
 	setCurrCatImage,
 	page,
 	setPage,
+	catsPerPage,
+	order,
 }) {
 	if (!catImages || catImages.length === 0) {
 		return (
@@ -16,6 +19,9 @@ export default function CatList({
 			</Box>
 		);
 	}
+
+	const hasNextPage = order === "RAND" ? false : !!catsPerPage && catImages.length === catsPerPage;
+	const hasPrevPage = page > 1;
 
 	return (
 		<Box
@@ -36,26 +42,47 @@ export default function CatList({
 				))}
 			</ImageList>
 
-			<Button
-				variant="outlined"
-				endIcon={<ArrowForwardIosIcon />}
-				sx={{
-					width: "140px",
-					borderWidth: "2px",
-					backgroundColor: "#e89483",
-					color: "#fff",
-					"&:hover": {
-						borderColor: "currentColor",
-						backgroundColor: "#e89483",
-						color: "#fff",
-					},
-					"&:disabled": { backgroundColor: "#fff", color: "#888888" },
-				}}
-				onClick={() => {
-					setPage(page + 1);
-				}}>
-				Next Page
-			</Button>
+			<Box sx={{ display: "flex", gap: 1, justifyContent: "center", mt: 1.5 }}>
+				<Button
+					variant="outlined"
+					startIcon={<ArrowBackIosNewIcon />}
+					disabled={!hasPrevPage}
+					sx={{
+						minWidth: 130,
+						borderWidth: "2px",
+						backgroundColor: !hasPrevPage ? "#fff" : "#e89483",
+						color: !hasPrevPage ? "#888888" : "#fff",
+						"&:hover": {
+							borderColor: "currentColor",
+							backgroundColor: "#e89483",
+							color: "#fff",
+						},
+					}}
+					onClick={() => setPage(Math.max(1, page - 1))}>
+					Previous Page
+				</Button>
+
+				<Button
+					variant="outlined"
+					endIcon={<ArrowForwardIosIcon />}
+					disabled={!hasNextPage}
+					sx={{
+						minWidth: 130,
+						borderWidth: "2px",
+						backgroundColor: !hasNextPage ? "#fff" : "#e89483",
+						color: !hasNextPage ? "#888888" : "#fff",
+						"&:hover": {
+							borderColor: "currentColor",
+							backgroundColor: "#e89483",
+							color: "#fff",
+						},
+					}}
+					onClick={() => {
+						setPage(page + 1);
+					}}>
+					Next Page
+				</Button>
+			</Box>
 		</Box>
 	);
 }

@@ -10,8 +10,8 @@ export default function Gallery() {
 	const [currCatImage, setCurrCatImage] = useState("");
 	const [catsPerPage, setCatsPerPage] = useState(20);
 	const [page, setPage] = useState(1);
-	const [order, setOrder] = useState(null);
-	const [breed, setBreed] = useState(null);
+	const [order, setOrder] = useState("ASC");
+	const [breed, setBreed] = useState("");
 	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
@@ -84,6 +84,9 @@ export default function Gallery() {
 			<h2>Gallery</h2>
 			<CurrentCat currCatImage={currCatImage}></CurrentCat>
 			<SortFilterBar
+				catsPerPage={catsPerPage}
+				order={order}
+				breed={breed}
 				setCatsPerPage={setCatsPerPage}
 				setPage={setPage}
 				setOrder={setOrder}
@@ -93,7 +96,9 @@ export default function Gallery() {
 				currCatImage={currCatImage}
 				setCurrCatImage={setCurrCatImage}
 				page={page}
-				setPage={setPage}></CatList>
+				setPage={setPage}
+				catsPerPage={catsPerPage}
+				order={order}></CatList>
 		</>
 	);
 }

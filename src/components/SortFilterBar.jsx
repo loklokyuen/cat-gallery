@@ -25,6 +25,10 @@ export default function SortFilterBar({
 }) {
 	const [breedList, setBreedList] = useState([]);
 	const [hidden, setHidden] = useState(false);
+	const selectedBreed =
+		breed && breedList.length > 0
+			? breedList.find((option) => option.id === breed) ?? null
+			: null;
 
 	useEffect(() => {
 		getBreedList()
@@ -99,9 +103,11 @@ export default function SortFilterBar({
 					alignItems={"center"}>
 					<Stack direction={"row"} spacing={2}>
 						<Autocomplete
-							value={breed}
+							value={selectedBreed}
 							options={breedList}
 							sx={{ width: 180 }}
+							isOptionEqualToValue={(option, value) => option.id === value?.id}
+							getOptionLabel={(option) => option?.label ?? ""}
 							onChange={(e, newBreed) => {
 								setBreed(newBreed ? newBreed.id : "");
 								setPage(1);
@@ -132,10 +138,9 @@ export default function SortFilterBar({
 							select
 							sx={{ width: "110px", paddingRight: "10px" }}
 							label="cats per page"
-							defaultValue="20"
 							value={catsPerPage}
 							onChange={(e) => {
-								setCatsPerPage(e.target.value);
+								setCatsPerPage(Number(e.target.value));
 								setPage(1);
 							}}>
 							<MenuItem value={10}>10</MenuItem>
@@ -147,10 +152,10 @@ export default function SortFilterBar({
 							id="order"
 							select
 							label="Order"
-							defaultValue="RAND"
-							value={order}
+							value={order ?? "ASC"}
 							onChange={(e) => {
 								setOrder(e.target.value);
+								setPage(1);
 							}}>
 							<MenuItem value={"ASC"}>ascending</MenuItem>
 							<MenuItem value={"DESC"}>descending</MenuItem>
