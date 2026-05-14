@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import CatList from "../components/CatList";
 import CurrentCat from "../components/CurrentCat";
 import {
@@ -26,11 +26,38 @@ export default function Gallery() {
 	const [likes, setLikes] = useState([]);
 	const [actionMessage, setActionMessage] = useState("");
 	const [actionError, setActionError] = useState("");
+	const messageTimer = useRef(null);
 	const favouriteLimit = 10;
 	const [subId] = useState(() => getOrCreateSubId());
+	const [loadError, setLoadError] = useState("");
+
+	const clearMessages = useCallback(() => {
+		if (messageTimer.current) {
+			clearTimeout(messageTimer.current);
+			messageTimer.current = null;
+		}
+		setActionMessage("");
+		setActionError("");
+	}, []);
+
+	const setTimedMessage = useCallback(
+		({ message, error }) => {
+			clearMessages();
+			if (message) setActionMessage(message);
+			if (error) setActionError(error);
+			messageTimer.current = setTimeout(() => {
+				setActionMessage("");
+				setActionError("");
+				messageTimer.current = null;
+			}, 5000);
+		},
+		[clearMessages]
+	);
 
 	useEffect(() => {
 		setLoading(true);
+		setLoadError("");
+		clearMessages();
 		getCatImages(catsPerPage, page - 1, order, breed)
 			.then((response) => {
 				if (response.status === 200) {
@@ -49,11 +76,16 @@ export default function Gallery() {
 				console.error("Error fetching cat images:", error);
 				setCatImages([]);
 				setCurrCatImage(null);
+				setLoadError(
+					error?.response?.status
+						? `Could not load cats (status ${error.response.status}).`
+						: "Could not load cats. Check your Cat API URL/key in .env."
+				);
 			})
 			.finally(() => {
 				setLoading(false);
 			});
-	}, [catsPerPage, page, order, breed]);
+	}, [catsPerPage, page, order, breed, clearMessages]);
 
 	const refreshReactions = useCallback(() => {
 		if (!subId) return;
@@ -95,53 +127,81 @@ export default function Gallery() {
 
 	const handleToggleLike = async () => {
 		if (!currCatImage) return;
-		setActionError("");
-		setActionMessage("");
-		const existingVote = likes.find((vote) => vote.image_id === currCatImage.id);
+		clearMessages();
+		const imageId = currCatImage.id;
+		const existingVote = likes.find((vote) => vote.image_id === imageId);
+		const previousLikes = likes;
 		try {
 			if (existingVote) {
-				await deleteVote(existingVote.id);
 				setLikes((prev) => prev.filter((vote) => vote.id !== existingVote.id));
-				setActionMessage("Like removed");
+				await deleteVote(existingVote.id);
+				setTimedMessage({ message: "Like removed" });
 			} else {
-				await voteForImage(currCatImage.id, 1, subId);
-				refreshReactions();
-				setActionMessage("Cat liked!");
+				const tempVote = {
+					id: `temp-${imageId}`,
+					image_id: imageId,
+					value: 1,
+				};
+				setLikes((prev) => [tempVote, ...prev]);
+				await voteForImage(imageId, 1, subId);
+				refreshReactions(); // replace temp id with real one
+				setTimedMessage({ message: "Cat liked!" });
 			}
 		} catch (err) {
 			console.error("Error toggling like", err);
-			setActionError("Could not update like. Please try again.");
+			setLikes(previousLikes);
+			setTimedMessage({ error: "Could not update like. Please try again." });
 		}
 	};
 
 	const handleToggleFavourite = async () => {
 		if (!currCatImage) return;
-		setActionError("");
-		setActionMessage("");
+		clearMessages();
+		const imageId = currCatImage.id;
 		const existingFavourite = favourites.find(
-			(fav) => fav.image_id === currCatImage.id
+			(fav) => fav.image_id === imageId
 		);
+		const previousFavourites = favourites;
 		try {
 			if (existingFavourite) {
-				await removeFavourite(existingFavourite.id);
 				setFavourites((prev) =>
 					prev.filter((fav) => fav.id !== existingFavourite.id)
 				);
-				setActionMessage("Removed from favourites");
+				await removeFavourite(existingFavourite.id);
+				setTimedMessage({ message: "Removed from favourites" });
 			} else {
 				if (favourites.length >= favouriteLimit) {
-					setActionError("Favourites are limited to 10. Remove one to add more.");
+					setTimedMessage({
+						error: "Favourites are limited to 10. Remove one to add more.",
+					});
 					return;
 				}
-				await addFavourite(currCatImage.id, subId);
-				refreshReactions();
-				setActionMessage("Added to favourites");
+				const tempFavourite = {
+					id: `temp-${imageId}`,
+					image_id: imageId,
+					image: { url: currCatImage.url },
+				};
+				setFavourites((prev) => [tempFavourite, ...prev]);
+				await addFavourite(imageId, subId);
+				refreshReactions(); // swap temp id with server id
+				setTimedMessage({ message: "Added to favourites" });
 			}
 		} catch (err) {
 			console.error("Error toggling favourite", err);
-			setActionError("Could not update favourites. Please try again.");
+			setFavourites(previousFavourites);
+			setTimedMessage({
+				error: "Could not update favourites. Please try again.",
+			});
 		}
 	};
+
+	useEffect(() => {
+		return () => {
+			if (messageTimer.current) {
+				clearTimeout(messageTimer.current);
+			}
+		};
+	}, []);
 
 	if (loading)
 		return (
@@ -186,6 +246,11 @@ export default function Gallery() {
 	return (
 		<>
 			<h2>Gallery</h2>
+			{loadError && (
+				<Alert severity="error" sx={{ mb: 1 }}>
+					{loadError}
+				</Alert>
+			)}
 			{actionMessage && (
 				<Alert severity="success" sx={{ mb: 1 }}>
 					{actionMessage}
