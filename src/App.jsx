@@ -60,6 +60,7 @@ function App() {
 							<Home user={user} setUser={setUser} setAvatarURL={setAvatarURL} />
 						}
 					/>
+
 					<Route path="/gallery" element={<Gallery />} />
 					<Route
 						path="/profile"
@@ -72,6 +73,7 @@ function App() {
 							/>
 						}
 					/>
+
 					<Route path="/activity" element={<Activity />} />
 					<Route path="*" element={<p>Page not found :\</p>} />
 				</Routes>

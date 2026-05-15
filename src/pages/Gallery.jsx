@@ -14,7 +14,7 @@ import {
 import { Alert, Box, Grid2, Skeleton } from "@mui/material";
 import SortFilterBar from "../components/SortFilterBar";
 
-export default function Gallery() {
+export default function Gallery({ setAvatarURL }) {
 	const [catImages, setCatImages] = useState([]);
 	const [currCatImage, setCurrCatImage] = useState("");
 	const [catsPerPage, setCatsPerPage] = useState(20);
@@ -269,6 +269,14 @@ export default function Gallery() {
 				isFavourite={currCatImage ? isFavourite(currCatImage.id) : false}
 				favouriteLimitReached={favouriteLimitReached}
 				favouriteLimit={favouriteLimit}
+				onSetAsAvatar={
+					setAvatarURL
+						? () => {
+								localStorage.setItem("avatar", currCatImage.url);
+								setAvatarURL(currCatImage.url);
+							}
+						: null
+				}
 			/>
 			<SortFilterBar
 				catsPerPage={catsPerPage}

@@ -42,46 +42,37 @@ export default function CatList({
 				))}
 			</ImageList>
 
-			<Box sx={{ display: "flex", gap: 1, justifyContent: "center", mt: 1.5 }}>
-				<Button
-					variant="outlined"
-					startIcon={<ArrowBackIosNewIcon />}
-					disabled={!hasPrevPage}
-					sx={{
-						minWidth: 130,
-						borderWidth: "2px",
-						backgroundColor: !hasPrevPage ? "#fff" : "#e89483",
-						color: !hasPrevPage ? "#888888" : "#fff",
-						"&:hover": {
-							borderColor: "currentColor",
+			<Box sx={{ display: "flex", gap: 1, justifyContent: "center", mt: 1.5, minHeight: 40 }}>
+				{hasPrevPage && (
+					<Button
+						variant="outlined"
+						startIcon={<ArrowBackIosNewIcon />}
+						sx={{
+							minWidth: 130,
+							borderWidth: "2px",
 							backgroundColor: "#e89483",
 							color: "#fff",
-						},
-					}}
-					onClick={() => setPage(Math.max(1, page - 1))}>
-					Previous Page
-				</Button>
-
-				<Button
-					variant="outlined"
-					endIcon={<ArrowForwardIosIcon />}
-					disabled={!hasNextPage}
-					sx={{
-						minWidth: 130,
-						borderWidth: "2px",
-						backgroundColor: !hasNextPage ? "#fff" : "#e89483",
-						color: !hasNextPage ? "#888888" : "#fff",
-						"&:hover": {
-							borderColor: "currentColor",
+							"&:hover": { borderColor: "currentColor", backgroundColor: "#d4705e", color: "#fff" },
+						}}
+						onClick={() => setPage(Math.max(1, page - 1))}>
+						Previous Page
+					</Button>
+				)}
+				{hasNextPage && (
+					<Button
+						variant="outlined"
+						endIcon={<ArrowForwardIosIcon />}
+						sx={{
+							minWidth: 130,
+							borderWidth: "2px",
 							backgroundColor: "#e89483",
 							color: "#fff",
-						},
-					}}
-					onClick={() => {
-						setPage(page + 1);
-					}}>
-					Next Page
-				</Button>
+							"&:hover": { borderColor: "currentColor", backgroundColor: "#d4705e", color: "#fff" },
+						}}
+						onClick={() => setPage(page + 1)}>
+						Next Page
+					</Button>
+				)}
 			</Box>
 		</Box>
 	);
